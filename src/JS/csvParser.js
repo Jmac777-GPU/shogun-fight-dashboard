@@ -93,7 +93,6 @@ async function parseMartialyticsCsv(file) {
 				resolve({
 					headers,
 					students: results.data,
-					totalRecords: results.data.length,
 					errors,
 					blockingErrors
 				})
