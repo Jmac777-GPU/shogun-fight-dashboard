@@ -51,23 +51,12 @@ async function signIn(googleResponse) {
 
 		statusElement.style.color = 'green'
 		statusElement.textContent = `Welcome, ${data.user.name || 'staff member'}! Your account is authorized.`
+
+		window.location.href = '../Pages/csvUpload.html'
 	} catch (error) {
 		console.error('Sign-in failed:', error)
 		statusElement.textContent =
 			error.message || 'Sign-in failed. Please try again.'
-	}
-}
-
-async function signOut() {
-	try {
-		const response = await fetch('/netlify/functions/oauth.mjs', {
-			method: 'DELETE'
-		})
-		if (!response.ok) throw new Error('Unable to sign out.')
-
-		window.location.href.replace('/')
-	} catch (error) {
-		console.error('Sign-out failed: ', error)
 	}
 }
 
@@ -99,6 +88,8 @@ async function checkSession() {
 
 		statusElement.style.color = 'green'
 		statusElement.textContent = `Welcome back, ${user.name || 'staff member'}!`
+
+		window.location.href = '../Pages/csvUpload.html'
 	} catch (error) {
 		console.error('Session check failed:', error)
 	}
