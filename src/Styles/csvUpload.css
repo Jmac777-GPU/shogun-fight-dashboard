@@ -710,7 +710,6 @@ body {
 		line-height: 1.5;
 	}
 
-	#validateButton:disabled,
 	#startAuditButton:disabled {
 		opacity: 1;
 		background: #e6e9ec;
@@ -721,23 +720,15 @@ body {
 		display: none;
 	}
 
-	.audit-buttons:has(#startAuditButton:enabled) #validateButton {
+	.audit-buttons:has(#startAuditButton:enabled) {
 		display: none;
 	}
 
-	#validateButton > .mobile-only {
+	.mobile-only {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
 		gap: 0.625rem;
-	}
-
-	#validateButton svg {
-		width: 100%;
-		height: 100%;
-		max-width: 20px;
-		max-height: 20px;
-		flex-shrink: 0;
 	}
 
 	.upload-footer p {

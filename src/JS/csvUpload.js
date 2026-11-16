@@ -4,7 +4,6 @@
 
 // Get HTML elements
 const csvFile = document.getElementById('csvFile')
-const validateButton = document.getElementById('validateButton')
 const startAuditButton = document.getElementById('startAuditButton')
 const uploadStatus = document.getElementById('uploadStatus')
 const fileStatus = document.getElementById('fileStatus')
@@ -40,7 +39,6 @@ async function validateFile(file) {
 
 	currentFile = null
 
-	validateButton.disabled = true
 	startAuditButton.disabled = true
 	selectedFile.hidden = true
 
@@ -87,10 +85,7 @@ async function validateFile(file) {
 
 		selectedFile.hidden = false
 
-		uploadStatus.textContent =
-			'Your report is selected. Validate your CSV to continue.'
-
-		validateButton.disabled = false
+		validateCSV()
 	} catch (error) {
 		if (selectionNumber !== fileSelectionNumber) {
 			return
@@ -107,7 +102,9 @@ document.querySelectorAll('[data-audit-date]').forEach((element) => {
 })
 
 // Choose Files button
-csvFile.addEventListener('change', () => {
+csvFile.addEventListener('change', (e) => {
+	console.log('file input on change: ' + e)
+
 	validateFile(csvFile.files[0])
 })
 
@@ -142,8 +139,7 @@ dropZone.addEventListener('drop', (event) => {
 	validateFile(file)
 })
 
-// Validate CSV button
-validateButton.addEventListener('click', async () => {
+async function validateCSV() {
 	if (!currentFile) {
 		uploadStatus.textContent = 'Please select a CSV file first.'
 		return
@@ -152,7 +148,6 @@ validateButton.addEventListener('click', async () => {
 	const fileBeingValidated = currentFile
 	const selectionNumber = fileSelectionNumber
 
-	validateButton.disabled = true
 	startAuditButton.disabled = true
 
 	uploadStatus.textContent = 'Reading and validating your CSV report...'
@@ -253,9 +248,5 @@ validateButton.addEventListener('click', async () => {
 		fileStatus.style.color = '#dc3545'
 
 		startAuditButton.disabled = true
-	} finally {
-		if (selectionNumber === fileSelectionNumber) {
-			validateButton.disabled = false
-		}
 	}
-})
+}
