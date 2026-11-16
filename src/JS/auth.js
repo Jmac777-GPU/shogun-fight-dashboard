@@ -58,6 +58,19 @@ async function signIn(googleResponse) {
 	}
 }
 
+async function signOut() {
+	try {
+		const response = await fetch('/netlify/functions/oauth.mjs', {
+			method: 'DELETE'
+		})
+		if (!response.ok) throw new Error('Unable to sign out.')
+
+		window.location.href.replace('/')
+	} catch (error) {
+		console.error('Sign-out failed: ', error)
+	}
+}
+
 document
 	.getElementById('copy-account-id')
 	.addEventListener('click', async () => {

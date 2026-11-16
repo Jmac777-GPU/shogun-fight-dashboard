@@ -1,5 +1,5 @@
 import {OAuth2Client} from 'google-auth-library'
-import {createSession, getSession} from '../lib/session.mjs'
+import {createSession, getSession, clearSession} from '../lib/session.mjs'
 
 const googleClient = new OAuth2Client()
 
@@ -18,6 +18,15 @@ export default async function handler(request, context) {
 	if (request.method === 'GET') {
 		const user = await getSession(context)
 		return jsonResponse(user ? 200 : 401, {user})
+	}
+
+	// Delete handles sign out and session clearing
+	if (request.method === 'DELETE') {
+		if (request.headers.get('origin') !== process.env.APP_ORIGIN) {
+			return jsonResponse(403, {error: 'Invalid request origin'})
+		}
+		clearSession(context)
+		return jsonResponse(200, {message: 'Signed out successfully.'})
 	}
 
 	// Post handles Google sign-in
