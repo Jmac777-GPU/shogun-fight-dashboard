@@ -1,11 +1,11 @@
 async function signOut() {
 	try {
-		const response = await fetch('/netlify/functions/oauth.mjs', {
+		const response = await fetch('/.netlify/functions/oauth', {
 			method: 'DELETE'
 		})
 		if (!response.ok) throw new Error('Unable to sign out.')
 
-		window.location.href.replace('/')
+		window.location.replace('../Pages/index.html')
 	} catch (error) {
 		console.error('Sign-out failed: ', error)
 	}

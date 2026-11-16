@@ -101,6 +101,11 @@ async function validateFile(file) {
 	}
 }
 
+// Populate Desktop date
+document.querySelectorAll('[data-audit-date]').forEach((element) => {
+	element.textContent = new Date().toLocaleDateString('en-US')
+})
+
 // Choose Files button
 csvFile.addEventListener('change', () => {
 	validateFile(csvFile.files[0])
