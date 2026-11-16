@@ -51,6 +51,8 @@ async function signIn(googleResponse) {
 
 		statusElement.style.color = 'green'
 		statusElement.textContent = `Welcome, ${data.user.name || 'staff member'}! Your account is authorized.`
+
+		window.location.href = '../Pages/csvUpload.html'
 	} catch (error) {
 		console.error('Sign-in failed:', error)
 		statusElement.textContent =
@@ -86,6 +88,8 @@ async function checkSession() {
 
 		statusElement.style.color = 'green'
 		statusElement.textContent = `Welcome back, ${user.name || 'staff member'}!`
+
+		window.location.href = '../Pages/csvUpload.html'
 	} catch (error) {
 		console.error('Session check failed:', error)
 	}

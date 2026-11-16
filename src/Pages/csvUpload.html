@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Martialytics CSV Upload</title>
+		<link rel="stylesheet" href="../Styles/csvUpload.css" />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&amp;display=swap"
+		/>
+
+		<script src="https://cdn.jsdelivr.net/npm/papaparse@5.5.3/papaparse.min.js"></script>
+		<script src="../JS/csvParser.js" defer></script>
+		<script src="../JS/csvUpload.js" defer></script>
+		<script src="../JS/signOut.js" defer></script>
+	</head>
+
+	<body>
+		<header class="dashboard-header">
+			<div class="dashboard-header-inner">
+				<img
+					class="dashboard-logo"
+					src="../assets/ShogunLogo.jpeg"
+					alt="Shogun Martial Arts and Logic"
+				/>
+
+				<span class="dashboard-title">Weekly Dashboard</span>
+
+				<div class="dashboard-account">
+					<div class="dashboard-welcome">
+						<strong>Welcome, Authorized staff</strong>
+						<p>Weekly audit · <time id="audit-date" data-audit-date></time></p>
+					</div>
+
+					<button class="sign-out-button" type="button" data-sign-out>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path
+								d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4
+						   M16 17l5-5-5-5M21 12H9"
+							/>
+						</svg>
+
+						<span>Sign Out</span>
+					</button>
+				</div>
+			</div>
+		</header>
+		<main class="dashboard-container">
+			<section class="dashboard-heading">
+				<div class="dashboard-heading-meta">
+					<span class="section-label">WEEKLY STAFF AUDIT</span>
+					<time class="mobile-audit-date" data-audit-date></time>
+				</div>
+
+				<h1>Ready for this week?</h1>
+
+				<p>
+					Upload your latest export. We'll bring your member records and forms
+					together.
+				</p>
+			</section>
+
+			<!-- Weekly Audit Progress Steps -->
+			<section class="audit-progress">
+				<div class="progress-step active">
+					<span class="step-number">01</span>
+
+					<div>
+						<h3>Upload Martialytics export</h3>
+						<p>Choose your latest CSV report</p>
+					</div>
+				</div>
+
+				<div class="progress-step">
+					<span class="step-number">02</span>
+
+					<div>
+						<h3>Automatically combine Jotform</h3>
+						<p>Retrieve forms and match per person</p>
+					</div>
+				</div>
+
+				<div class="progress-step">
+					<span class="step-number">03</span>
+
+					<div>
+						<h3>Review, search &amp; filter</h3>
+						<p>One consolidated weekly view</p>
+					</div>
+				</div>
+			</section>
+
+			<section class="upload-section">
+				<div class="upload-card">
+					<div class="mobile-upload-icon" aria-hidden="true">
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.7"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<path
+								d="M12 16V3m-5 5 5-5 5 5
+					   M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"
+							/>
+						</svg>
+					</div>
+
+					<div class="upload-header">
+						<div>
+							<h2>
+								Upload Martialytics
+								<span class="upload-title-ending">Export Here!</span>
+							</h2>
+							<p>CSV export · Up to 10 MB</p>
+						</div>
+
+						<span class="file-type">MARTIALYTICS CSV</span>
+					</div>
+
+					<div class="upload-dropzone" id="dropZone">
+						<div class="upload-icon">↑</div>
+						<p>Drag and drop your export, or choose a file</p>
+
+						<label for="csvFile" class="choose-file-button">
+							<svg
+								viewBox="0 0 24 24"
+								fill="none"
+								stroke="currentColor"
+								stroke-width="2"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								aria-hidden="true"
+							>
+								<path
+									d="M3 8V5a2 2 0 0 1 2-2h4l2 3h8
+						   a2 2 0 0 1 2 2v2M3 8h18l-3 12H2z"
+								/>
+							</svg>
+							Choose Files
+						</label>
+
+						<input type="file" id="csvFile" accept=".csv,text/csv" hidden />
+					</div>
+
+					<div class="selected-file" id="selectedFile" hidden>
+						<div class="file-details">
+							<span class="file-icon">▤</span>
+							<div>
+								<strong id="fileName"></strong>
+								<p id="fileSize"></p>
+							</div>
+						</div>
+
+						<span class="file-ready" id="fileStatus">Validation Pending</span>
+					</div>
+				</div>
+
+				<div class="upload-footer">
+					<p id="uploadStatus" role="status" aria-live="polite">
+						Choose a report to begin your audit.
+					</p>
+
+					<div class="audit-buttons">
+						<button type="button" id="startAuditButton" disabled>
+							<span class="mobile-only">
+								<svg
+									viewBox="0 0 24 24"
+									fill="none"
+									stroke="currentColor"
+									stroke-width="2"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									aria-hidden="true"
+								>
+									<path d="m7 17 10-10M7 7h10v10" />
+								</svg>
+								<span class="desktop-only">Start Audit</span>
+							</span>
+						</button>
+					</div>
+				</div>
+			</section>
+
+			<section class="integration-info">
+				<ul class="source-badges" aria-label="Data sources">
+					<li>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<ellipse cx="12" cy="5" rx="7" ry="3" />
+							<path
+								d="M5 5v7c0 1.7 3.1 3 7 3s7-1.3 7-3V5
+					   M5 12v7c0 1.7 3.1 3 7 3s7-1.3 7-3v-7"
+							/>
+						</svg>
+						Martialytics
+					</li>
+
+					<li>
+						<svg
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path
+								d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1
+					   h12a1 1 0 0 0 1-1V8zM14 3v5h5M9 14h6M9 17h4"
+							/>
+						</svg>
+						Jotform
+					</li>
+				</ul>
+
+				<h3>Martialytics + Jotform, automatically</h3>
+
+				<p class="desktop-only">
+					We'll retrieve Jotform release, enrollment, and cancellation
+					submissions and combine them with your Martialytics export.
+				</p>
+
+				<p class="mobile-only">
+					Your Martialytics data and Jotform data get pulled together — no
+					manual matching needed.
+				</p>
+			</section>
+		</main>
+	</body>
+</html>

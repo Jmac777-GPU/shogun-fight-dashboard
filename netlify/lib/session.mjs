@@ -52,3 +52,7 @@ export async function getSession(context) {
 		return null
 	}
 }
+
+export function clearSession(context) {
+	context.cookies.delete({name: 'sfc_session', path: '/'})
+}
