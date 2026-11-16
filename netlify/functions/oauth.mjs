@@ -101,7 +101,11 @@ export default async function handler(request, context) {
 
 	if (!allowedAccountIds.has(payload.sub)) {
 		return jsonResponse(403, {
-			error: 'This Google account is not authorized to access the dashboard.'
+			error: 'This Google account is not authorized to access the dashboard.',
+			account: {
+				id: payload.sub,
+				email: payload.email || ''
+			}
 		})
 	}
 

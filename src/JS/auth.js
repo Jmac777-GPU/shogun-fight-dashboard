@@ -1,8 +1,13 @@
 console.log('auth.js loaded')
 
 async function signIn(googleResponse) {
-	console.log(googleResponse)
 	const statusElement = document.getElementById('auth-status')
+	const accessRequest = document.getElementById('access-request')
+
+	// Reset previous authentication feedback
+	accessRequest.hidden = true
+	statusElement.style.color = ''
+	document.getElementById('copy-account-id').textContent = 'Copy Account ID'
 
 	if (!googleResponse?.credential) {
 		statusElement.textContent = 'Google did not return a credential.'
@@ -23,9 +28,18 @@ async function signIn(googleResponse) {
 		})
 
 		const data = await httpResponse.json()
-		console.log('data: ' + data.authorized)
 
 		if (!httpResponse.ok) {
+			// Display verified account information if unauthorized
+			if (httpResponse.status === 403 && data.account?.id) {
+				document.getElementById('account-email').textContent =
+					data.account.email
+
+				document.getElementById('account-id').textContent = data.account.id
+
+				accessRequest.hidden = false
+			}
+
 			throw new Error(data.error || `HTTP ${httpResponse.status}`)
 		}
 
@@ -43,6 +57,20 @@ async function signIn(googleResponse) {
 			error.message || 'Sign-in failed. Please try again.'
 	}
 }
+
+document
+	.getElementById('copy-account-id')
+	.addEventListener('click', async () => {
+		const accountId = document.getElementById('account-id').textContent
+		const button = document.getElementById('copy-account-id')
+
+		try {
+			await navigator.clipboard.writeText(accountId)
+			button.textContent = 'Copied!'
+		} catch {
+			button.textContent = 'Select the ID above to copy'
+		}
+	})
 
 async function checkSession() {
 	const statusElement = document.getElementById('auth-status')
